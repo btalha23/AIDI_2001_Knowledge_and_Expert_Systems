@@ -9,8 +9,8 @@ import streamlit as st
 # from langchain.llms import OpenAI # -> Importing LLMs from langchain is deprecated. 
                                     # -> Importing from langchain will no longer be supported as of langchain==0.2.0.
 from langchain_community.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
-# from langchain_openai import ChatOpenAI
+# from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 
 from langchain_experimental.agents import create_csv_agent
 from langchain.agents.agent_types import AgentType
