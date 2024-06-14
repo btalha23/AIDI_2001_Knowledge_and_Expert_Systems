@@ -16,7 +16,8 @@ from langchain_experimental.agents import create_csv_agent
 from langchain.agents.agent_types import AgentType
 import pandas as pd
 
-openai_api_key = 'OPENAI_API_KEY'
+openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')   # ''
+                                                                            # 'OPENAI_API_KEY'
 
 def generate_response_from_csv(input_csv, input_text):
     # llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
@@ -37,10 +38,13 @@ def generate_response_from_csv(input_csv, input_text):
     csv_agent = create_csv_agent(llm, 
                                 'titanic.csv',
                                 verbose=True,
-                                agent_type=AgentType.OPENAI_FUNCTIONS,)
+                                agent_type=AgentType.OPENAI_FUNCTIONS,
+                                handle_parsing_errors=True)
 
     if input_text is not None and input_text != "":
-        response = csv_agent.run('What are mortality rates considering passenger class and gender? which category had best mortality?')
+        print(f"The input text coming from the form is: {input_text}")
+        # response = csv_agent.run('What are mortality rates considering passenger class and gender? which category had best mortality?')
+        response = csv_agent.run(input_text)
         # print(csv_agent)
         # st.info(response)
         response
@@ -60,8 +64,13 @@ def generate_response(input_text):
     csv_agent.run(input_text)
 # generate_response('Hello World')
 
-text = input('Question: ')
-generate_response(text)
+# **************************************************************************
+# Commented on June 14, 2024
+# These lines of code were used to test the <generate_response()> function
+# Uncomment if there is a need to test the CSV agent again
+# text = input('Question: ') 
+# generate_response(text)
+# **************************************************************************
 
 def main():
     st.title('🦜🔗 CSV 📈 Interact App')
@@ -76,16 +85,17 @@ def main():
     #     print(f"user_csv_uploaded_url: {user_csv._file_urls.upload_url}")
     
     # if user_csv is not None:
-    #     with st.form('my_form'):
-    #         text = st.text_area('Enter a Question/ Thought Regarding the Uploaded CSV:', '')
-    #         submitted = st.form_submit_button('Submit')
-    #         if not openai_api_key.startswith('sk-'):
-    #             st.warning('Please enter your OpenAI API key!', icon='⚠')
-    #         if submitted and openai_api_key.startswith('sk-'):
-    #             generate_response_from_csv(input_csv=user_csv.name,input_text=text)
+    with st.form('my_form'):
+        text = st.text_area('Enter a Question/ Thought Regarding the Uploaded CSV:', '')
+        submitted = st.form_submit_button('Submit')
+        if not openai_api_key.startswith('sk-'):
+            st.warning('Please enter your OpenAI API key!', icon='⚠')
+        if submitted and openai_api_key.startswith('sk-'):
+            print(f"The submitted text is: {text}")
+            generate_response_from_csv(input_csv='user_csv.name',input_text=text.strip())
 
     # generate_response('Hello World')
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
 
