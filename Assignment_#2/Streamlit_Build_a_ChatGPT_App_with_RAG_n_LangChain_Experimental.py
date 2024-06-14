@@ -17,22 +17,8 @@ from langchain.agents.agent_types import AgentType
 import pandas as pd
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')   # ''
-                                                                            # 'OPENAI_API_KEY'
 
 def generate_response_from_csv(input_csv, input_text):
-    # llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    # st.info(llm(input_text))
-
-    # csv_agent = create_csv_agent(ChatOpenAI(temperature=0,
-    #                                         model="gpt-3.5-turbo-0613"), 
-    #                             'titanic.csv',
-    #                             verbose=True,
-    #                             agent_type=AgentType.OPENAI_FUNCTIONS,)
-    #csv_agent.run('What are mortality rates considering passenger class and gender? which category had best mortality?')
-
-    # llm = OpenAI(temperature=0, 
-    #              model_name="gpt-3.5-turbo",
-    #              openai_api_key=openai_api_key)
     llm = ChatOpenAI(temperature=0, 
                      model="gpt-3.5-turbo-0613")
     csv_agent = create_csv_agent(llm, 
@@ -51,38 +37,12 @@ def generate_response_from_csv(input_csv, input_text):
     else:
         st.info(body='Invalid user input')
 
-def generate_response(input_text):
-    # llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    # st.info(llm(input_text))
-
-    csv_agent = create_csv_agent(ChatOpenAI(temperature=0,
-                                            model="gpt-3.5-turbo-0613"), 
-                                'titanic.csv',
-                                verbose=True,
-                                agent_type=AgentType.OPENAI_FUNCTIONS,)
-    # csv_agent.run('What are mortality rates considering passenger class and gender? which category had best mortality?')
-    csv_agent.run(input_text)
-# generate_response('Hello World')
-
-# **************************************************************************
-# Commented on June 14, 2024
-# These lines of code were used to test the <generate_response()> function
-# Uncomment if there is a need to test the CSV agent again
-# text = input('Question: ') 
-# generate_response(text)
-# **************************************************************************
 
 def main():
     st.title('🦜🔗 CSV 📈 Interact App')
 
     user_csv = st.file_uploader(label="Upload a CSV file",
                                 type="csv")
-    # if user_csv is not None:
-    #     print(f"user_csv: {user_csv}")
-    #     print(f"user_csv_name: {user_csv.name}")
-    #     print(f"user_csv_file_id: {user_csv.file_id}")
-    #     print(f"user_csv_file_urls: {user_csv._file_urls}")
-    #     print(f"user_csv_uploaded_url: {user_csv._file_urls.upload_url}")
     
     if user_csv is not None:
         with st.form('my_form'):
@@ -94,7 +54,6 @@ def main():
                 print(f"The submitted text is: {text}")
                 generate_response_from_csv(input_csv=user_csv,input_text=text.strip())
 
-    # generate_response('Hello World')
 
 if __name__ == "__main__":
     main()
