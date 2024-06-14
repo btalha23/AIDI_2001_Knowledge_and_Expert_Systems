@@ -36,10 +36,10 @@ def generate_response_from_csv(input_csv, input_text):
     llm = ChatOpenAI(temperature=0, 
                      model="gpt-3.5-turbo-0613")
     csv_agent = create_csv_agent(llm, 
-                                'titanic.csv',
+                                input_csv, #'titanic.csv',
                                 verbose=True,
                                 agent_type=AgentType.OPENAI_FUNCTIONS,
-                                handle_parsing_errors=True)
+                                )
 
     if input_text is not None and input_text != "":
         print(f"The input text coming from the form is: {input_text}")
@@ -75,8 +75,8 @@ def generate_response(input_text):
 def main():
     st.title('🦜🔗 CSV 📈 Interact App')
 
-    # user_csv = st.file_uploader(label="Upload a CSV file",
-    #                             type="csv")
+    user_csv = st.file_uploader(label="Upload a CSV file",
+                                type="csv")
     # if user_csv is not None:
     #     print(f"user_csv: {user_csv}")
     #     print(f"user_csv_name: {user_csv.name}")
@@ -84,15 +84,15 @@ def main():
     #     print(f"user_csv_file_urls: {user_csv._file_urls}")
     #     print(f"user_csv_uploaded_url: {user_csv._file_urls.upload_url}")
     
-    # if user_csv is not None:
-    with st.form('my_form'):
-        text = st.text_area('Enter a Question/ Thought Regarding the Uploaded CSV:', '')
-        submitted = st.form_submit_button('Submit')
-        if not openai_api_key.startswith('sk-'):
-            st.warning('Please enter your OpenAI API key!', icon='⚠')
-        if submitted and openai_api_key.startswith('sk-'):
-            print(f"The submitted text is: {text}")
-            generate_response_from_csv(input_csv='user_csv.name',input_text=text.strip())
+    if user_csv is not None:
+        with st.form('my_form'):
+            text = st.text_area('Enter a Question/ Thought Regarding the Uploaded CSV:', '')
+            submitted = st.form_submit_button('Submit')
+            if not openai_api_key.startswith('sk-'):
+                st.warning('Please enter your OpenAI API key!', icon='⚠')
+            if submitted and openai_api_key.startswith('sk-'):
+                print(f"The submitted text is: {text}")
+                generate_response_from_csv(input_csv=user_csv,input_text=text.strip())
 
     # generate_response('Hello World')
 
