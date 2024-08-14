@@ -6,4 +6,6 @@ In this assignment, how to use the HuggingFace API and Gradio.io to create an in
 - Text Summarization
 - Text Translation
 
-## Assignment 2: Building a ChatGPT App with Retrieval Augmented Generation using Stream.io
+## Assignment #2: Building a ChatGPT App with Retrieval Augmented Generation using Stream.io
+
+## Assignment #3: Assignment 3: Using LangChain Prebuilt Chains for AI Applications
